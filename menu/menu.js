@@ -1,4 +1,5 @@
 let xvideo = require('../xvideo/ReqParse.js')
+let lis = require('../xvideo/listen.js')
 
 console.reset =  function () {
   return process.stdout.write('\033c');
@@ -19,7 +20,7 @@ exports.render = function(index){
 	}
 };
 
-exports.choose = async function(index){
+exports.choose = function menu(index){
 	if(index==3){
 		console.log('Goodbye!');
 		process.stdin.pause();
@@ -27,15 +28,14 @@ exports.choose = async function(index){
 		console.reset();
 		switch(index){
 			case 0:
-				console.reset();
-				let home = await xvideo.hpc(0)
-				console.log(home);
+				process.stdin.on('keypress',lis.hchoose);
+				lis.homes.renderTen();
 				//function main page listener
 				break;
 			case 1:
-				console.reset();
-				let keypage = await xvideo.kwc('大奶',0);
-				console.log(keypage);
+				lis.kkk.keyword = '';
+				lis.keywords.renderTen();
+				process.stdin.on('keypress',lis.kchoose);
 				//keyword page listener
 				break;
 			case 2:
