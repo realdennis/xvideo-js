@@ -1,8 +1,8 @@
 //let keypress = require('keypress');
 let menu = require('./menu.js');
 
-exports.all = function(){
-    let index = 0;
+exports.all = function(index){
+    //let index = 0;
     menu.render(index);
     function checkIndexRange(index){
         return (index+4)%4;

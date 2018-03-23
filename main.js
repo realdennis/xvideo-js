@@ -31,6 +31,6 @@ process.stdin.on('keypress',function accept(ch,key){
     }
     if(key.name=='return'){
         process.stdin.removeListener('keypress',accept);
-        mkl.all();
+        mkl.all(0);
     }
 })

@@ -64,8 +64,9 @@ exports.choose = function menu(index){
 				})
 				break;
 			case 2:
+				process.stdin.on('keypress',lis.fchoose);
+				lis.fpages.renderTen();
 				//Favorite page listener
-				console.log('2');
 				break;
 		}
 	}
