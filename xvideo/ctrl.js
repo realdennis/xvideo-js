@@ -1,11 +1,10 @@
-let keypress = require('keypress');
-let tc = require('../tagCrawl.js')
+let fav = require('../favjson.js');
+const host = 'https://www.xvideos.com'
+let xvideo = require('./ReqParse.js');
 
 console.reset =  function () {
   return process.stdout.write('\033c');
 };
-let xvideo = require('./ReqParse.js');
-
 
 function homeXv(){
 	let obj={};
@@ -34,6 +33,10 @@ function homeXv(){
 				}
 				else console.log('  	'+obj.videoList[i].attr.name);
 			}
+			console.log('==========================================================')
+			console.log('"right" : See the video tag')
+			console.log('"space" : Add favorite ')
+			console.log('"enter" : Watch the video')
 		}catch(err){
 			console.reset();
 			console.log('loading...')
@@ -58,11 +61,13 @@ function homeXv(){
 
 	obj.right = async function(){
 		try{
-			obj.videoList[obj.pointer].tag = 'Waiting...'
-			obj.renderTen();
-			let tag = await tc.tagCrawl(obj.videoList[obj.pointer].attr.link);
-			obj.videoList[obj.pointer].tag = tag;
-			obj.renderTen();
+			if(obj.videoList[obj.pointer].tag==undefined){
+				obj.videoList[obj.pointer].tag = 'Waiting...'
+				obj.renderTen();
+				let tag = await xvideo.tagCrawl(obj.videoList[obj.pointer].attr.link);
+				obj.videoList[obj.pointer].tag = tag;
+				obj.renderTen();
+			}
 		}catch(err){
 				obj.videoList[obj.pointer].tag = 'No Tag'
 				obj.renderTen();
@@ -73,10 +78,22 @@ function homeXv(){
 
 	obj.save = async function(){
 			if(obj.videoList[obj.pointer].tag==undefined){
-				let tag = await tc.tagCrawl(obj.videoList[obj.pointer].attr.link);
+				let tag = await xvideo.tagCrawl(obj.videoList[obj.pointer].attr.link);
 				obj.videoList[obj.pointer].tag = tag;
 			}
+
 			fav.addjson(obj.videoList[obj.pointer]);
+			obj.renderTen();
+			console.log('Save Success');
+	}
+
+	obj.open = function(){
+		const opn = require('openurl');
+
+		if(obj.videoList[obj.pointer]!=undefined){
+			videoUrl = host+obj.videoList[obj.pointer].attr.link;
+			opn.open(videoUrl);
+		}
 	}
 	return obj;
 }
@@ -99,26 +116,66 @@ function keyXv(key){
 
 function favXv(){
 	let obj = homeXv();
-	let fav = require('../favjson.js')
 	obj.videoList = fav.readjson();
+
+	obj.down = function(){
+		obj.pointer==obj.videoList.length-1?obj.pointer=obj.videoList.length-1:obj.pointer+=1;
+		if(Math.floor(obj.pointer/10)> Math.floor((obj.pointer-1)/10)) obj.index+=10;
+		//console.log(obj.index);
+		obj.renderTen();
+	}
+
+	obj.delete = function(){
+		console.reset();
+		try{
+			for(let i=obj.index;i<obj.index+10;i++){
+				if(obj.videoList[i]==undefined) break;
+				if(i==obj.pointer) console.log('->	Delete')
+				else console.log('  	'+obj.videoList[i].attr.name);
+			}
+			obj.videoList.splice(obj.pointer,1);
+			fav.cleanjson();
+			for(let i=0;i<obj.videoList.length;i++){
+				fav.addjson(obj.videoList[i]);
+			}
+
+		}catch(err){
+			console.log(err);
+			console.log('Nothing in your fav list, press "<-" back to menu')
+		}
+	}
 
 	obj.right = function(){
 		console.reset();
-		for(let i=obj.index;i<obj.index+10;i++){
-			if(i==obj.pointer){
-				console.log('->	'+obj.videoList[i].attr.name)
-				if(obj.videoList[i].tag!==undefined){
-					console.log('		------>'+obj.videoList[i].tag);
-					}	
-				}
-			else console.log('  	'+obj.videoList[i].attr.name);
+		try{
+			for(let i=obj.index;i<obj.index+10;i++){
+				if(i==obj.pointer){
+					console.log('->	'+obj.videoList[i].attr.name)
+					if(obj.videoList[i].tag!==undefined){
+						console.log('		------>'+obj.videoList[i].tag);
+						}	
+					}
+				else console.log('  	'+obj.videoList[i].attr.name);
+			}
+		}catch(err){
+			console.log('press "<-" back to menu')
 		}
+
 	}
 	obj.renderTen = function(){
 		console.reset();
-		for(let i=obj.index;i<obj.index+10;i++){
-			if(i==obj.pointer) console.log('->	'+obj.videoList[i].attr.name)
-			else console.log('  	'+obj.videoList[i].attr.name);
+		try{
+			for(let i=obj.index;i<obj.index+10;i++){
+				if(obj.videoList[i]==undefined) break;
+				if(i==obj.pointer) console.log('->	'+obj.videoList[i].attr.name)
+				else console.log('  	'+obj.videoList[i].attr.name);
+			}
+			console.log('==========================================================')
+			console.log('"right" : See the video tag')
+			console.log('"enter" : Watch the video')
+			console.log('    "d" : Delete this video')
+		}catch(err){
+			console.log('Nothing in your fav list, press "<-" back to menu')
 		}
 	}
 	return obj

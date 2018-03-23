@@ -1,9 +1,8 @@
 let request = require('request');
 let cheerio = require('cheerio');
-let host = "https://www.xvideos.com";
 var URL = require('url');
 let readline = require('readline')
-
+let host = "https://www.xvideos.com";
 /*
 Keyword(homepage) -> Page(loop?) -> URI -> request(async)
 -> body -> "video_list"(append?)
@@ -68,6 +67,27 @@ function parseVideo(body,page){
 	return avArray;
 }
 
+
+function parseTag(body){
+	let $ = cheerio.load(body);
+	let tagTable = $('.video-tags-list');
+	let tag = [];
+	let element = tagTable.find('li');
+	if(element[1]===undefined) throw new Error('no tag');
+	for(let i=0;i<element.length-1;i++){
+		text = element.eq(i).children('a').text();
+		if(text.charAt(0)!='\n') tag.push(text);
+	}
+	tag = tag.slice(0,5);//save first five tag
+	return tag;
+}
+
+async function tagCrawler(path){
+	let body = await req(host+path);
+	let taglist = parseTag(body);
+	return taglist
+}
+
 async function homepageCrawler(page){
 	let body = await req(homepageUrl(page));
 	let avlist = parseVideo(body,page);
@@ -79,7 +99,6 @@ async function keywordCrawler(keyword,page){
 	let avlist = parseVideo(body,page);
 	return avlist;
 }
-//keywordCrawler('keyword',0);
-//homepageCrawler(0);
+exports.tagCrawl = tagCrawler;
 exports.hpc = homepageCrawler;
 exports.kwc = keywordCrawler;

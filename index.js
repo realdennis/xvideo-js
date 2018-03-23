@@ -1,4 +1,4 @@
-let mkl = require('./menu/menuKeyListener.js');
+let menu = require('./menu.js');
 console.reset =  function () {
   return process.stdout.write('\033c');
 };
@@ -31,6 +31,6 @@ process.stdin.on('keypress',function accept(ch,key){
     }
     if(key.name=='return'){
         process.stdin.removeListener('keypress',accept);
-        mkl.all(0);
+        menu.control(0);
     }
 })
