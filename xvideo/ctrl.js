@@ -186,6 +186,7 @@ function favXv(){
 
 	}
 	obj.renderTen = function(){
+		obj.videoList = fav.readjson();
 		console.reset();
 		try{
 			for(let i=obj.index;i<obj.index+10;i++){

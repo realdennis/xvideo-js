@@ -1,7 +1,7 @@
 {
   "name": "xvideo-js",
-  "version": "1.2.0",
-  "main": "main.js",
+  "version": "1.2.1",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
