@@ -1,3 +1,5 @@
+const chalk = require('chalk');
+
 let lis = require('./xvideo/listen.js')
 let keypress = require('keypress')
 const readline = require('readline');
@@ -14,9 +16,8 @@ function render(index){
     };
     console.reset();
     for(i in menu){
-        if(i == index) tab = '->    ';
-        else tab = '    '
-        console.log(tab+menu[i]);
+        if(i == index) console.log('->    '+chalk.bgWhite.blue.bold(menu[i]));
+        else console.log('      '+menu[i]);
     }
 };
 

@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/realdennis/xvideo.js#readme",
   "dependencies": {
+    "chalk": "^2.3.2",
     "cheerio": "^1.0.0-rc.2",
     "keypress": "^0.2.1",
     "openurl": "^1.1.1",

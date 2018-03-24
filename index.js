@@ -1,4 +1,5 @@
 let menu = require('./menu.js');
+const chalk = require('chalk');
 console.reset =  function () {
   return process.stdout.write('\033c');
 };
@@ -6,11 +7,11 @@ console.reset =  function () {
 console.reset();
 console.log('===============================');
 console.log('|                             |');
-console.log('|     Welcome to Xvideo.js    |');
+console.log('|     Welcome to '+chalk.bgWhite.red.bold('Xvideo.js')+'    |');
 console.log('|                             |');
 console.log('===============================');
 console.log('');
-console.log('      Are you 18? (Enter/q)');
+console.log('      '+chalk.bgCyan.bold('Are you 18?')+' (Enter/q)');
 
 let keypress = require('keypress');
 

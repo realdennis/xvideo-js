@@ -1,4 +1,5 @@
 let fav = require('../favjson.js');
+const chalk = require('chalk');
 const host = 'https://www.xvideos.com'
 let xvideo = require('./ReqParse.js');
 
@@ -22,14 +23,22 @@ function homeXv(){
 	};
 	obj.pointer = 0;
 	obj.index = 0;
+	obj.loadingState = 0;
 	obj.renderTen = function(){
 		try{
 			console.reset();
 			for(let i=obj.index;i<obj.index+10;i++){
 				if(i==obj.pointer){
-					console.log('->	'+obj.videoList[i].attr.name)
-					if(obj.videoList[i].tag!==undefined) console.log('		------>'+obj.videoList[i].tag);
-					
+					console.log('->	'+chalk.red.bold(obj.videoList[i].attr.name))
+					if(obj.videoList[i].tag!==undefined ){
+						if(obj.videoList[i].tag[0]!='W'){
+							for(let j=0;j<obj.videoList[i].tag.length;j++){
+								console.log('	--> '+chalk.bgGreen.white(obj.videoList[i].tag[j]));
+							}
+						}else{
+							console.log('	--> '+chalk.bgYellow.white(obj.videoList[i].tag));
+						}
+					}
 				}
 				else console.log('  	'+obj.videoList[i].attr.name);
 			}
@@ -40,7 +49,13 @@ function homeXv(){
 		}catch(err){
 			console.reset();
 			console.log('loading...')
-			obj.nextPage().then(()=>{obj.renderTen()},err=>{console.log(err)});
+			if(obj.loadingState==0){
+				obj.nextPage().then(()=>{
+						obj.renderTen()
+						obj.loadingState=0;
+					},err=>{console.log(err)});
+				obj.loadingState=1;
+			}
 		}
 	}
 	obj.down = function(){
@@ -71,20 +86,20 @@ function homeXv(){
 		}catch(err){
 				obj.videoList[obj.pointer].tag = 'No Tag'
 				obj.renderTen();
-				//console.log('No more tag');
-				//throw new Error('no tag');
 			}
 	};
 
 	obj.save = async function(){
 			if(obj.videoList[obj.pointer].tag==undefined){
+				obj.videoList[obj.pointer].tag = 'Waiting...'
+				obj.renderTen();
 				let tag = await xvideo.tagCrawl(obj.videoList[obj.pointer].attr.link);
 				obj.videoList[obj.pointer].tag = tag;
 			}
 
 			fav.addjson(obj.videoList[obj.pointer]);
 			obj.renderTen();
-			console.log('Save Success');
+			console.log(chalk.bgGreen.white('Save to favorite Success!'));
 	}
 
 	obj.open = function(){
@@ -149,15 +164,23 @@ function favXv(){
 		console.reset();
 		try{
 			for(let i=obj.index;i<obj.index+10;i++){
+				if(obj.videoList[i]==undefined) break;
 				if(i==obj.pointer){
-					console.log('->	'+obj.videoList[i].attr.name)
+					console.log('->	'+chalk.red.bold(obj.videoList[i].attr.name));
 					if(obj.videoList[i].tag!==undefined){
-						console.log('		------>'+obj.videoList[i].tag);
-						}	
-					}
+						for(let j=0;j<obj.videoList[i].tag.length;j++){
+							console.log('	-->'+chalk.bgGreen.white(obj.videoList[i].tag[j]));
+						}
+					}	
+				}
 				else console.log('  	'+obj.videoList[i].attr.name);
 			}
+			console.log('==========================================================')
+			console.log('"right" : See the video tag')
+			console.log('"enter" : Watch the video')
+			console.log('    "d" : Delete this video')
 		}catch(err){
+//			console.log(err);
 			console.log('press "<-" back to menu')
 		}
 
@@ -167,7 +190,7 @@ function favXv(){
 		try{
 			for(let i=obj.index;i<obj.index+10;i++){
 				if(obj.videoList[i]==undefined) break;
-				if(i==obj.pointer) console.log('->	'+obj.videoList[i].attr.name)
+				if(i==obj.pointer) console.log('->	'+chalk.red.bold(obj.videoList[i].attr.name));
 				else console.log('  	'+obj.videoList[i].attr.name);
 			}
 			console.log('==========================================================')
