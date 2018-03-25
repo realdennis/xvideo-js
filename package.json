@@ -1,6 +1,6 @@
 {
   "name": "xvideo-js",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,6 +21,7 @@
   "dependencies": {
     "chalk": "^2.3.2",
     "cheerio": "^1.0.0-rc.2",
+    "inquirer": "^5.2.0",
     "keypress": "^0.2.1",
     "openurl": "^1.1.1",
     "request": "^2.85.0"
