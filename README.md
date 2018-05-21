@@ -11,10 +11,10 @@ Xvideos own the rights of the video on their site, so my application will open i
 (or bypassing their website to use the video)
 
 # Usage
-![](https://raw.githubusercontent.com/realdennis/xvideo-js/master/demo.gif)
+![](https://raw.githubusercontent.com/realdennis/xvideo-js/master/static/demo.gif)
 ```
 $ xvideo-js //full app
-$ xvideo-js -k [keyword] // shortcut
+$ xvideo // shortcut
 ```
 
 # Installation
