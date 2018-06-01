@@ -3,7 +3,7 @@ const listen = require('./listen.js')
 const readline = require('readline');
 
 module.exports = function(){
-    process.stdout.write('\033c');
+    process.stdout.write('\x1bc');
     const inquirer = require('inquirer');
     inquirer.prompt([{
     	type:'list',
@@ -72,7 +72,7 @@ module.exports = function(){
                 //Favorite page listener
                 break;
     		case "exit":
-                process.stdout.write('\033c');
+                process.stdout.write('\x1bc');
                 console.log('Good bye')
     			process.exit();
     			break;

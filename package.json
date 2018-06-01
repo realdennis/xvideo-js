@@ -12,8 +12,8 @@
   "author": "realdennis",
   "license": "MIT",
   "bin": {
-    "xvideo-js": "./index.js",
-    "xvideo":"./index.js"
+    "xvideo-js": "./lib/index.js",
+    "xvideo": "./lib/index.js"
   },
   "bugs": {
     "url": "https://github.com/realdennis/xvideo-js/issues"
@@ -27,7 +27,9 @@
     "openurl": "^1.1.1",
     "request": "^2.85.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
+  },
   "description": "CLI application to choose video, add it to favorite, see the video tag, and also open the video on browser.",
   "keywords": [
     "xvideo",

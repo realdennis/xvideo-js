@@ -4,7 +4,7 @@ const host = 'https://www.xvideos.com'
 let xvideo = require('./ReqParse.js');
 
 console.reset =  function () {
-  return process.stdout.write('\033c');
+  return process.stdout.write('\x1bc');
 };
 
 exports.homepage = homeXv;
