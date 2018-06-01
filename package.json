@@ -28,7 +28,8 @@
     "request": "^2.85.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0"
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2017": "^6.24.1"
   },
   "description": "CLI application to choose video, add it to favorite, see the video tag, and also open the video on browser.",
   "keywords": [
