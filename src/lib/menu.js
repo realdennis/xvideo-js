@@ -1,6 +1,86 @@
 const keypress = require('keypress');
-const listen = require('./listen.js')
 const readline = require('readline');
+const ctrl = require('./ctrl.js');
+
+let home = ctrl.homepage;
+let keyword = ctrl.keypage;
+
+function hchoose(ch,key){
+  switch(key.name){
+    case 'up':
+      home.up();
+      break;
+    case 'down':
+      home.down();
+      break;
+    case 'left':
+      process.stdin.removeListener('keypress',hchoose);
+
+      const _menu = require('./menu.js');
+      _menu();
+      break;
+    case 'right':
+      home.right()
+      break;
+    case 'space':
+      home.save();
+      break;
+    case 'return':
+      home.open();
+      break;
+  }
+}
+
+function kchoose(ch,key){
+  switch(key.name){
+    case 'up':
+      keyword.up();
+      break;
+    case 'down':
+      keyword.down();
+      break;
+    case 'left':
+      process.stdin.removeListener('keypress',kchoose);
+
+      const _menu = require('./menu.js');
+      _menu();
+      break;
+    case 'right':
+      keyword.right();
+      break;
+    case 'space':
+      keyword.save();
+      break;
+    case 'return':
+      keyword.open();
+  } 
+}
+
+function fchoose(ch,key){
+  let fav = new ctrl.favpage();
+  switch(key.name){
+    case 'up':
+      fav.up()
+      break;
+    case 'down':
+      fav.down();
+      break;
+    case 'left':
+      process.stdin.removeListener('keypress',fchoose);
+
+      const _menu = require('./menu.js');
+      _menu();
+      break;
+    case 'right':
+      fav.right();
+      break;
+    case 'd':
+      fav.delete();
+      break;
+    case 'return':
+      fav.open();
+  }
+}
 
 module.exports = function(){
     process.stdout.write('\x1bc');
@@ -20,19 +100,19 @@ module.exports = function(){
     	switch(answer.choice){
     		case "home": 
                 keypress(process.stdin);
-                process.stdin.on('keypress',listen.hchoose);
+                process.stdin.on('keypress',hchoose);
                 process.stdin.setRawMode(true);
                 process.stdin.resume();
-                listen.homes.renderTen();
+                home.renderTen();
                 break;
     		case "keyword":
-                if(listen.keywords.keyword!=''){
+                if(keyword.key!==''){
                     
                     keypress(process.stdin);
                     process.stdin.setRawMode(true);
                     process.stdin.resume();
-                    process.stdin.on('keypress',listen.kchoose);
-                    listen.keywords.renderTen();
+                    process.stdin.on('keypress',kchoose);
+                    keyword.renderTen();
                 }
                 else{
                     process.stdin.setRawMode(false);
@@ -42,11 +122,11 @@ module.exports = function(){
                     });
                     console.log('Give me keyword: ')
                     rl.on('line',answer=>{
-                        listen.keywords.keyword = answer;
+                        keyword.key = answer;
                         rl.close();
                     })
                     rl.on('close',function(){
-                        if(listen.keywords.keyword==''){
+                        if(keyword.key===''){
                             console.log('keyword empty');
                             process.exit();
                         }
@@ -58,17 +138,19 @@ module.exports = function(){
                                 process.stdin.pause();
                             }
                         })
-                        process.stdin.on('keypress',listen.kchoose);
-                        listen.keywords.renderTen();
+                        process.stdin.on('keypress',kchoose);
+                        keyword.renderTen();
                     })
                 }
                 break;
     		case "favorite":
+
+                let fav = new ctrl.favpage();
                 keypress(process.stdin);
                 process.stdin.setRawMode(true);
                 process.stdin.resume();
-                process.stdin.on('keypress',listen.fchoose);
-                listen.fpages.renderTen();
+                process.stdin.on('keypress',fchoose);
+                fav.renderTen();
                 //Favorite page listener
                 break;
     		case "exit":

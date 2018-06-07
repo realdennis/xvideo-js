@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-function addJSONsync(something){
+exports.addjson = function addJSONsync(something){
 	let obj;
 	try{
 		obj = fs.readFileSync('./fav.json');
@@ -13,7 +13,7 @@ function addJSONsync(something){
 	fs.writeFileSync('./fav.json', JSON.stringify(obj));
 }
 
-function readJSONsync(){
+exports.readjson = function readJSONsync(){
 	let obj;
 	try{
 		obj = fs.readFileSync('./fav.json');
@@ -24,11 +24,7 @@ function readJSONsync(){
 	return obj;
 }
 
-function cleanJSONsync(){
+exports.cleanjson = function cleanJSONsync(){
 	let obj = [];
 	fs.writeFileSync('./fav.json',JSON.stringify(obj));
 }
-
-exports.addjson = addJSONsync;
-exports.readjson = readJSONsync;
-exports.cleanjson = cleanJSONsync;

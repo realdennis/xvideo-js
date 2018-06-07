@@ -1,157 +1,159 @@
-let fav = require('./favjson.js');
 const chalk = require('chalk');
-const host = 'https://www.xvideos.com'
 let xvideo = require('./ReqParse.js');
+const RESET =  ()=> process.stdout.write('\x1bc');
+const BOTTOM = `==========================================================
+"right" : See the video tag
+"space" : Add favorite
+"enter" : Watch the video`;
 
-console.reset =  function () {
-  return process.stdout.write('\x1bc');
-};
-
-exports.homepage = homeXv;
-
-function homeXv(){
-	let obj={};
-	obj.page = 0;//initial
-	obj.videoList = [];
-	obj.nextPage = async function(){
+class Page{
+  constructor(){
+  	this.page = 0;//initial
+  	this.videoList = [];
+    this.pointer = 0;
+    this.index = 0;
+    this.loadingState = 0;
+  }
+	async nextPage(){
 		try{
-			let temp = await xvideo.hpc(obj.page);
-			obj.videoList = obj.videoList.concat(temp);
-			obj.page+=1;
+			let temp = await xvideo.homepageCrawler(this.page);
+			this.videoList = this.videoList.concat(temp);
+			this.page+=1;
 		}catch(err){
 				console.log('No more home page :(');
 				throw new Error('no content');
 			}
 	};
-	obj.pointer = 0;
-	obj.index = 0;
-	obj.loadingState = 0;
-	obj.renderTen = function(){
+	renderTen(){
 		try{
-			console.reset();
-			for(let i=obj.index;i<obj.index+10;i++){
-				if(i==obj.pointer){
-					console.log('->	'+chalk.red.bold(obj.videoList[i].attr.name))
-					if(obj.videoList[i].tag!==undefined ){
-						if(obj.videoList[i].tag[0]!='W'){
-							for(let j=0;j<obj.videoList[i].tag.length;j++){
-								console.log('	--> '+chalk.bgGreen.white(obj.videoList[i].tag[j]));
+      RESET();
+			for(let i=this.index;i<this.index+10;i++){
+				if(i==this.pointer){
+					console.log(`->	${chalk.red.bold(this.videoList[i].attr.name)}`)
+					if(this.videoList[i].tag!==undefined ){
+						if(this.videoList[i].tag[0]!='W'){
+							for(let j=0;j<this.videoList[i].tag.length;j++){
+								console.log(`	--> ${chalk.bgGreen.white(this.videoList[i].tag[j])}`);
 							}
 						}else{
-							console.log('	--> '+chalk.bgYellow.white(obj.videoList[i].tag));
+							console.log(`	--> ${chalk.bgYellow.white(this.videoList[i].tag)}`);
 						}
 					}
 				}
-				else console.log('  	'+obj.videoList[i].attr.name);
+				else console.log(`  	${this.videoList[i].attr.name}`);
 			}
-			console.log('==========================================================')
-			console.log('"right" : See the video tag')
-			console.log('"space" : Add favorite ')
-			console.log('"enter" : Watch the video')
+      console.log(BOTTOM);
 		}catch(err){
-			console.reset();
+      RESET()
 			console.log('loading...')
-			if(obj.loadingState==0){
-				obj.nextPage().then(()=>{
-						obj.renderTen()
-						obj.loadingState=0;
+			if(this.loadingState==0){
+				this.nextPage().then(()=>{
+						this.renderTen()
+						this.loadingState=0;
 					},err=>{console.log(err)});
-				obj.loadingState=1;
+				this.loadingState=1;
 			}
 		}
 	}
-	obj.down = function(){
-		obj.pointer+=1;
-		if(Math.floor(obj.pointer/10)> Math.floor((obj.pointer-1)/10)) obj.index+=10;
+	down(){
+		this.pointer+=1;
+		if(Math.floor(this.pointer/10)> Math.floor((this.pointer-1)/10)) this.index+=10;
 		//console.log(obj.index);
-		obj.renderTen();
+		this.renderTen();
 	}
-	obj.up = function(){
-		if(obj.pointer==0){
-			obj.renderTen();
+	up(){
+		if(this.pointer==0){
+			this.renderTen();
 			return;
 		}
-		obj.pointer-=1;
-		if(Math.floor(obj.pointer/10)< Math.floor((obj.pointer+1)/10)) obj.index-=10;
-		obj.renderTen();
+		this.pointer-=1;
+		if(Math.floor(this.pointer/10)< Math.floor((this.pointer+1)/10)) this.index-=10;
+		this.renderTen();
 	}
 
-	obj.right = async function(){
+	async right(){
 		try{
-			if(obj.videoList[obj.pointer].tag==undefined){
-				obj.videoList[obj.pointer].tag = 'Waiting...'
-				obj.renderTen();
-				let tag = await xvideo.tagCrawl(obj.videoList[obj.pointer].attr.link);
-				obj.videoList[obj.pointer].tag = tag;
-				obj.renderTen();
+			if(this.videoList[this.pointer].tag===undefined){
+				this.videoList[this.pointer].tag = 'Waiting...'
+				this.renderTen();
+				let tag = await xvideo.tagCrawler(this.videoList[this.pointer].attr.link);
+				this.videoList[this.pointer].tag = tag;
+				this.renderTen();
 			}
 		}catch(err){
-				obj.videoList[obj.pointer].tag = 'No Tag'
-				obj.renderTen();
+				this.videoList[this.pointer].tag = 'No Tag'
+				this.renderTen();
 			}
 	};
 
-	obj.save = async function(){
-			if(obj.videoList[obj.pointer].tag==undefined){
-				obj.videoList[obj.pointer].tag = 'Waiting...'
-				obj.renderTen();
-				let tag = await xvideo.tagCrawl(obj.videoList[obj.pointer].attr.link);
-				obj.videoList[obj.pointer].tag = tag;
+	async save(){
+			if(this.videoList[this.pointer].tag===undefined){
+				this.videoList[this.pointer].tag = 'Waiting...'
+				this.renderTen();
+				let tag = await xvideo.tagCrawler(this.videoList[this.pointer].attr.link);
+				this.videoList[this.pointer].tag = tag;
 			}
-
-			fav.addjson(obj.videoList[obj.pointer]);
-			obj.renderTen();
+      const fav = require('./favjson.js');
+			fav.addjson(this.videoList[this.pointer]);
+			this.renderTen();
 			console.log(chalk.bgGreen.white('Save to favorite Success!'));
 	}
 
-	obj.open = function(){
+	open(){
 		const opn = require('openurl');
 
-		if(obj.videoList[obj.pointer]!=undefined){
-			videoUrl = host+obj.videoList[obj.pointer].attr.link;
+		if(this.videoList[this.pointer]!==undefined){
+      const host = 'https://www.xvideos.com'
+			videoUrl = host+this.videoList[this.pointer].attr.link;
 			opn.open(videoUrl);
 		}
 	}
-	return obj;
+  //default return this
 }
-exports.keypage = function(key){
-	let obj = homeXv();
-	obj.keyword = key;
-	obj.nextPage = async function(){	
+
+class Keypage extends Page{
+  constructor(key){
+    super();
+    this.key = key;
+  }
+	async nextPage(){	
 		try{
-			let temp = await xvideo.kwc(obj.keyword,obj.page);
-			obj.videoList = obj.videoList.concat(temp);
-			obj.page+=1;
+			let temp = await xvideo.keywordCrawler(this.key, this.page);
+			this.videoList = this.videoList.concat(temp);
+			this.page+=1;
 		}catch(err){
 			console.log('No keyword porn find...sorry:(')
 			throw new Error('no content');
 		}
 	};
-	return obj;
 }
-exports.favpage = function(){
-	let obj = homeXv();
-	obj.videoList = fav.readjson();
 
-	obj.down = function(){
-		obj.pointer==obj.videoList.length-1?obj.pointer=obj.videoList.length-1:obj.pointer+=1;
-		if(Math.floor(obj.pointer/10)> Math.floor((obj.pointer-1)/10)) obj.index+=10;
+exports.favpage = class Favpage extends Page{
+  constructor(){
+    super();    
+    const favorite = require('./favjson.js');
+    this.videoList = favorite.readjson();
+  }
+
+	down(){
+		this.pointer==this.videoList.length-1?this.pointer=this.videoList.length-1:this.pointer+=1;
+		if(Math.floor(this.pointer/10)> Math.floor((this.pointer-1)/10)) this.index+=10;
 		//console.log(obj.index);
-		obj.renderTen();
+		this.renderTen();
 	}
 
-	obj.delete = function(){
-		console.reset();
+	delete(){
+    RESET();
 		try{
-			for(let i=obj.index;i<obj.index+10;i++){
-				if(obj.videoList[i]==undefined) break;
-				if(i==obj.pointer) console.log('->	Delete')
-				else console.log('  	'+obj.videoList[i].attr.name);
+			for(let i=this.index;i<this.index+10;i++){
+				if(this.videoList[i]==undefined) break;
+				if(i==this.pointer) console.log('->	Delete')
+				else console.log(`  	${obj.videoList[i].attr.name}`);
 			}
-			obj.videoList.splice(obj.pointer,1);
+			this.videoList.splice(this.pointer,1);
 			fav.cleanjson();
-			for(let i=0;i<obj.videoList.length;i++){
-				fav.addjson(obj.videoList[i]);
+			for(let i=0;i<this.videoList.length;i++){
+				fav.addjson(this.videoList[i]);
 			}
 
 		}catch(err){
@@ -160,46 +162,42 @@ exports.favpage = function(){
 		}
 	}
 
-	obj.right = function(){
-		console.reset();
+	right() {
+		RESET();
 		try{
-			for(let i=obj.index;i<obj.index+10;i++){
-				if(obj.videoList[i]==undefined) break;
-				if(i==obj.pointer){
-					console.log('->	'+chalk.red.bold(obj.videoList[i].attr.name));
-					if(obj.videoList[i].tag!==undefined){
-						for(let j=0;j<obj.videoList[i].tag.length;j++){
-							console.log('	-->'+chalk.bgGreen.white(obj.videoList[i].tag[j]));
+			for(let i=this.index;i<this.index+10;i++){
+				if(this.videoList[i]==undefined) break;
+				if(i==this.pointer){
+					console.log(`->	${chalk.red.bold(this.videoList[i].attr.name)}`);
+					if(this.videoList[i].tag!==undefined){
+						for(let j=0;j<this.videoList[i].tag.length;j++){
+							console.log(`	-->${chalk.bgGreen.white(this.videoList[i].tag[j])}`);
 						}
 					}	
 				}
-				else console.log('  	'+obj.videoList[i].attr.name);
+				else console.log(`  	${this.videoList[i].attr.name}`);
 			}
-			console.log('==========================================================')
-			console.log('"right" : See the video tag')
-			console.log('"enter" : Watch the video')
-			console.log('    "d" : Delete this video')
+      console.log(BOTTOM)
 		}catch(err){
 			console.log('press "<-" back to menu')
 		}
 
 	}
-	obj.renderTen = function(){
-		obj.videoList = fav.readjson();
-		console.reset();
+	renderTen(){
+		RESET();
 		try{
-			for(let i=obj.index;i<obj.index+10;i++){
-				if(obj.videoList[i]==undefined) break;
-				if(i==obj.pointer) console.log('->	'+chalk.red.bold(obj.videoList[i].attr.name));
-				else console.log('  	'+obj.videoList[i].attr.name);
+			for(let i=this.index;i<this.index+10;i++){
+				if(this.videoList[i]==undefined) break;
+				if(i==this.pointer) console.log(`->	${chalk.red.bold(this.videoList[i].attr.name)}`);
+				else console.log(`  	${this.videoList[i].attr.name}`);
 			}
-			console.log('==========================================================')
-			console.log('"right" : See the video tag')
-			console.log('"enter" : Watch the video')
-			console.log('    "d" : Delete this video')
+      console.log(BOTTOM);
 		}catch(err){
+      console.log(err)
 			console.log('Nothing in your fav list, press "<-" back to menu')
 		}
 	}
-	return obj
 }
+
+exports.homepage = new Page();
+exports.keypage = new Keypage('');
