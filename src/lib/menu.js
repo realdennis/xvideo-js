@@ -1,11 +1,10 @@
 const keypress = require('keypress');
 const readline = require('readline');
 const ctrl = require('./ctrl.js');
-
-let home = ctrl.homepage;
-let keyword = ctrl.keypage;
+let home =  ctrl.homepage;
 
 function hchoose(ch,key){
+
   switch(key.name){
     case 'up':
       home.up();
@@ -29,31 +28,6 @@ function hchoose(ch,key){
       home.open();
       break;
   }
-}
-
-function kchoose(ch,key){
-  switch(key.name){
-    case 'up':
-      keyword.up();
-      break;
-    case 'down':
-      keyword.down();
-      break;
-    case 'left':
-      process.stdin.removeListener('keypress',kchoose);
-
-      const _menu = require('./menu.js');
-      _menu();
-      break;
-    case 'right':
-      keyword.right();
-      break;
-    case 'space':
-      keyword.save();
-      break;
-    case 'return':
-      keyword.open();
-  } 
 }
 
 function fchoose(ch,key){
@@ -83,6 +57,31 @@ function fchoose(ch,key){
 }
 
 module.exports = function(){
+    let keyword = new ctrl.keypage('');
+    function kchoose(ch,key){
+      switch(key.name){
+        case 'up':
+          keyword.up();
+          break;
+        case 'down':
+          keyword.down();
+          break;
+        case 'left':
+          process.stdin.removeListener('keypress',kchoose);
+
+          const _menu = require('./menu.js');
+          _menu();
+          break;
+        case 'right':
+          keyword.right();
+          break;
+        case 'space':
+          keyword.save();
+          break;
+        case 'return':
+          keyword.open();
+      } 
+    }
     process.stdout.write('\x1bc');
     const inquirer = require('inquirer');
     inquirer.prompt([{

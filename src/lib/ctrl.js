@@ -110,8 +110,9 @@ class Page{
 	}
   //default return this
 }
+exports.homepage =  new Page();
 
-class Keypage extends Page{
+exports.keypage = class Keypage extends Page{
   constructor(key){
     super();
     this.key = key;
@@ -198,6 +199,3 @@ exports.favpage = class Favpage extends Page{
 		}
 	}
 }
-
-exports.homepage = new Page();
-exports.keypage = new Keypage('');
