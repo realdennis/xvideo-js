@@ -4,7 +4,6 @@ const ctrl = require('./ctrl.js');
 let home =  ctrl.homepage;
 
 function hchoose(ch,key){
-
   switch(key.name){
     case 'up':
       home.up();
@@ -14,7 +13,6 @@ function hchoose(ch,key){
       break;
     case 'left':
       process.stdin.removeListener('keypress',hchoose);
-
       const _menu = require('./menu.js');
       _menu();
       break;
