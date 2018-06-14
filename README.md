@@ -1,7 +1,7 @@
 # xvideo-js
 
 ![](https://img.shields.io/badge/node-%3E%3D6.10.0-green.svg) [![GitHub license](https://img.shields.io/github/license/realdennis/xvideo-js.svg)](https://github.com/realdennis/xvideo-js/blob/master/LICENSE) 
-[![GitHub issues](https://img.shields.io/github/issues/realdennis/xvideo-js.svg)](https://github.com/realdennis/xvideo-js/issues) [![GitHub stars](https://img.shields.io/github/stars/realdennis/xvideo-js.svg)](https://github.com/realdennis/xvideo-js/stargazers) [![GitHub forks](https://img.shields.io/github/forks/realdennis/xvideo-js.svg)](https://github.com/realdennis/xvideo-js/network) [![Greenkeeper badge](https://badges.greenkeeper.io/realdennis/xvideo-js.svg)](https://greenkeeper.io/)
+[![GitHub issues](https://img.shields.io/github/issues/realdennis/xvideo-js.svg)](https://github.com/realdennis/xvideo-js/issues) [![GitHub stars](https://img.shields.io/github/stars/realdennis/xvideo-js.svg)](https://github.com/realdennis/xvideo-js/stargazers) [![GitHub forks](https://img.shields.io/github/forks/realdennis/xvideo-js.svg)](https://github.com/realdennis/xvideo-js/network) [![Greenkeeper badge](https://badges.greenkeeper.io/realdennis/xvideo-js.svg)](https://greenkeeper.io/) [![Build Status](https://travis-ci.org/realdennis/xvideo-js.svg?branch=master)](https://travis-ci.org/realdennis/xvideo-js)
 
 More tissue You use, 
 Less issue I have ...?
