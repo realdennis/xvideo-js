@@ -1,5 +1,5 @@
 var expect = require('chai').expect
-var menu = require('../src/lib/menu');
+var menu = require('../lib/lib/menu');
 describe('[lib] Menu test',()=>{
   beforeEach(()=>{
     process.stdout.write = ()=>{};
