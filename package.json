@@ -22,7 +22,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "cheerio": "^1.0.0-rc.2",
-    "inquirer": "^5.2.0",
+    "inquirer": "^6.0.0",
     "keypress": "^0.2.1",
     "openurl": "^1.1.1",
     "request": "^2.85.0"
