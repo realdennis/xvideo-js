@@ -1,16 +1,14 @@
 #!/usr/bin/env node
 const chalk = require('chalk');
-console.reset =  function () {
-  return process.stdout.write('\x1bc');
-};
+const RESET =  ()=> process.stdout.write('\x1bc');
+const WELCOME = `===============================
+|                             |
+|     Welcome to ${chalk.bgWhite.red.bold('Xvideo.js')}    |
+|                             |
+===============================`;
 
-console.reset();
-console.log('===============================');
-console.log('|                             |');
-console.log('|     Welcome to '+chalk.bgWhite.red.bold('Xvideo.js')+'    |');
-console.log('|                             |');
-console.log('===============================');
-console.log('');
+RESET();
+console.log(WELCOME);
 
 const inquirer = require('inquirer');
 inquirer.prompt([{

@@ -1,8 +1,8 @@
-let request = require('request');
-let cheerio = require('cheerio');
-var URL = require('url');
-let readline = require('readline')
-let host = "https://www.xvideos.com";
+const request = require('request');
+const cheerio = require('cheerio');
+const URL = require('url');
+const readline = require('readline')
+const host = "https://www.xvideos.com";
 /*
 Keyword(homepage) -> Page(loop?) -> URI -> request(async)
 -> body -> "video_list"(append?)
@@ -47,7 +47,7 @@ function req(url){
 		})
 }
 
-function parseVideo(body,page){
+const parseVideo = (body,page)=>{
 	let $ = cheerio.load(body);
 	let content = $('#content');
 	let avArray = [];
@@ -68,7 +68,7 @@ function parseVideo(body,page){
 }
 
 
-function parseTag(body){
+const parseTag = (body)=>{
 	let $ = cheerio.load(body);
 	let tagTable = $('.video-tags-list');
 	let tag = [];
@@ -82,23 +82,20 @@ function parseTag(body){
 	return tag;
 }
 
-async function tagCrawler(path){
+exports.tagCrawler  = async (path)=>{
 	let body = await req(host+path);
 	let taglist = parseTag(body);
 	return taglist
 }
 
-async function homepageCrawler(page){
+exports.homepageCrawler = async (page)=>{
 	let body = await req(homepageUrl(page));
 	let avlist = parseVideo(body,page);
 	return avlist;
 }
 
-async function keywordCrawler(keyword,page){
+exports.keywordCrawler = async (keyword,page)=>{
 	let body = await req(keywordUrl(keyword,page));
 	let avlist = parseVideo(body,page);
 	return avlist;
 }
-exports.tagCrawl = tagCrawler;
-exports.hpc = homepageCrawler;
-exports.kwc = keywordCrawler;

@@ -3,7 +3,8 @@
   "version": "1.4.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha || exit 0",
+    "build": "babel src -d lib"
   },
   "repository": {
     "type": "git",
@@ -24,12 +25,14 @@
     "cheerio": "^1.0.0-rc.2",
     "inquirer": "^5.2.0",
     "keypress": "^0.2.1",
+    "mocha": "^5.2.0",
     "openurl": "^1.1.1",
     "request": "^2.85.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-es2017": "^6.24.1"
+    "babel-preset-es2017": "^6.24.1",
+    "chai": "^4.1.2"
   },
   "description": "CLI application to choose video, add it to favorite, see the video tag, and also open the video on browser.",
   "keywords": [

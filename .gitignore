@@ -1,3 +1,4 @@
 node_modules/
 fav.json
 package-lock.json
+.vscode
