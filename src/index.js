@@ -20,7 +20,7 @@ inquirer.prompt([{
         const _menu = require('./lib/menu.js')
         _menu();
     }else{
-        console.reset();
+        RESET();
         console.log('okay goodbye');
         process.stdin.pause();
     }
