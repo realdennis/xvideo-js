@@ -13,8 +13,8 @@
   "author": "realdennis",
   "license": "MIT",
   "bin": {
-    "xvideo-js": "./lib/index.js",
-    "xvideo": "./lib/index.js"
+    "xvideo-js": "./dist/index.js",
+    "xvideo": "./dist/index.js"
   },
   "bugs": {
     "url": "https://github.com/realdennis/xvideo-js/issues"
