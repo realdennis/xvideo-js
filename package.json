@@ -1,10 +1,10 @@
 {
   "name": "xvideo-js",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "main": "index.js",
   "scripts": {
     "test": "mocha || exit 0",
-    "build": "babel src -d lib"
+    "build": "babel src -d dist"
   },
   "repository": {
     "type": "git",

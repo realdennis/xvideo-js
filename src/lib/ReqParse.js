@@ -58,7 +58,7 @@ const parseVideo = (body,page)=>{
 			page:page,
 			attr:{
 				index:i,
-				name:video.eq(i).children('div.thumb-under').find('a').text(),
+				name:video.eq(i).children('div.thumb-under').find('a').text().substr(0,30),
 				link:video.eq(i).children('div.thumb-under').find('a').attr('href')
 			}
 		}

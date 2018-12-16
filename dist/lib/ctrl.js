@@ -119,7 +119,7 @@ class Page {
 
 		if (this.videoList[this.pointer] !== undefined) {
 			const host = 'https://www.xvideos.com';
-			videoUrl = host + this.videoList[this.pointer].attr.link;
+			let videoUrl = host + this.videoList[this.pointer].attr.link;
 			opn.open(videoUrl);
 		}
 	}
