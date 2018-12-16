@@ -58,8 +58,8 @@ const parseVideo = (body,page)=>{
 			page:page,
 			attr:{
 				index:i,
-				name:video.eq(i).children('p').eq(0).text(),
-				link:video.eq(i).children('p').eq(0).children('a').attr('href')
+				name:video.eq(i).children('div.thumb-under').find('a').text(),
+				link:video.eq(i).children('div.thumb-under').find('a').attr('href')
 			}
 		}
 		avArray.push(obj);
