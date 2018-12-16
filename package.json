@@ -1,6 +1,6 @@
 {
   "name": "xvideo-js",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "main": "index.js",
   "scripts": {
     "test": "mocha || exit 0",
