@@ -32,7 +32,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-es2017": "^6.24.1",
     "chai": "^4.1.2",
-    "mocha": "^5.2.0"
+    "mocha": "^6.0.0"
   },
   "description": "CLI application to choose video, add it to favorite, see the video tag, and also open the video on browser.",
   "keywords": [
