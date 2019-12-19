@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-let xvideo = require('./ReqParse.js');
+const xvideo = require('./ReqParse.js');
 const RESET =  ()=> process.stdout.write('\x1bc');
 const BOTTOM = `==========================================================
 "right" : See the video tag

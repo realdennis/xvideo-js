@@ -1,7 +1,6 @@
 const request = require('request');
 const cheerio = require('cheerio');
 const URL = require('url');
-const readline = require('readline')
 const host = "https://www.xvideos.com";
 /*
 Keyword(homepage) -> Page(loop?) -> URI -> request(async)

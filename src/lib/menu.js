@@ -1,7 +1,7 @@
 const keypress = require('keypress');
 const readline = require('readline');
 const ctrl = require('./ctrl.js');
-let home =  ctrl.homepage;
+const home =  ctrl.homepage;
 
 function hchoose(ch,key){
   switch(key.name){
