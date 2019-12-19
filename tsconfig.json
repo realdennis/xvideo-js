@@ -1,23 +1,20 @@
 {
-    "compilerOptions": {
-      "outDir": "./dist",
-      "target": "es3",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "lib": [
-        "es2017"
-      ],
-      "declaration": true,
-      "strictNullChecks": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noImplicitReturns": true,
-      "noFallthroughCasesInSwitch": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true
-    },
-    "exclude": [
-      "node_modules",
-      "dist"
-    ]
-  }
+  "compilerOptions": {
+    "jsx": "react",
+    "outDir": "./dist",
+    "target": "es3",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["es2017"],
+    "declaration": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+  },
+  "include": [
+    "./**/*",
+    "*.tsx"
+  ],
+  "exclude": ["node_modules", "dist"]
+}
